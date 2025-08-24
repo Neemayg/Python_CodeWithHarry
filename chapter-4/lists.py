@@ -1,0 +1,17 @@
+friends=["Lakshay","Krish","Kirti","swastik","Nikhil","Amrita"]
+print(friends[0])
+friends[0]="Hippo"
+print(friends)
+l1=[1,2,7,2,4,9,10]
+l1.sort()
+print(l1)
+l1.append(20)
+print(l1)
+l1.extend([19,21,23])
+print(l1)
+l1.reverse()
+print(l1)
+l1.remove(4)
+print(l1)
+l1.pop(3)
+print(l1)
