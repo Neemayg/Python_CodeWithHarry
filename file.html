@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Hub - Play Now!</title>
+    <!-- 1. Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 2. Load Google Font (Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- 3. Custom Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* A nice gradient background */
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+        }
+        /* Simple transition for views */
+        .game-view {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        /* Helper class to hide views */
+        .hidden-view {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+            position: absolute;
+        }
+        /* Helper class to show views */
+        .visible-view {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+            position: static; /* Or relative, depending on layout */
+        }
+        /* Custom button style for game choices */
+        .game-choice-btn {
+            transition: all 0.2s ease;
+        }
+        .game-choice-btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .game-choice-btn:active {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="text-white min-h-screen flex items-center justify-center p-4">
+
+    <!-- Main Container -->
+    <div class="w-full max-w-md mx-auto">
+
+        <!-- View 1: Main Menu -->
+        <div id="menu-view" class="game-view bg-gray-800 p-8 rounded-2xl shadow-2xl text-center visible-view">
+            <h1 class="text-4xl font-bold mb-8">Game Hub</h1>
+            <p class="text-lg text-gray-300 mb-10">Choose a game to play!</p>
+            
+            <!-- Game 1 Button -->
+            <div id="play-rps-btn" class="game-choice-btn bg-indigo-600 hover:bg-indigo-500 p-6 rounded-lg mb-6 cursor-pointer">
+                <span class="text-5xl mb-3 block">✊✋✌️</span>
+                <h2 class="text-2xl font-semibold">Rock Paper Scissors</h2>
+            </div>
+            
+            <!-- Game 2 Button -->
+            <div id="play-swg-btn" class="game-choice-btn bg-teal-600 hover:bg-teal-500 p-6 rounded-lg cursor-pointer">
+                <span class="text-5xl mb-3 block">🐍💧🔫</span>
+                <h2 class="text-2xl font-semibold">Snake Water Gun</h2>
+            </div>
+        </div>
+
+        <!-- View 2: Rock Paper Scissors Game -->
+        <div id="rps-game-view" class="game-view bg-gray-800 p-8 rounded-2xl shadow-2xl hidden-view">
+            <button class="back-to-menu-btn text-indigo-400 hover:text-indigo-300 mb-4">&larr; Back to Menu</button>
+            <h1 class="text-3xl font-bold text-center mb-6">Rock Paper Scissors</h1>
+            
+            <!-- Choice Buttons -->
+            <div class="flex justify-around mb-8">
+                <button class="rps-choice-btn game-choice-btn bg-gray-700 p-4 rounded-full text-5xl" data-choice="rock">✊</button>
+                <button class="rps-choice-btn game-choice-btn bg-gray-700 p-4 rounded-full text-5xl" data-choice="paper">✋</button>
+                <button class="rps-choice-btn game-choice-btn bg-gray-700 p-4 rounded-full text-5xl" data-choice="scissors">✌️</button>
+            </div>
+            
+            <!-- Result Area -->
+            <div class="text-center bg-gray-900 p-6 rounded-lg min-h-[150px]">
+                <p class="text-lg mb-2">You: <span id="rps-player-choice" class="font-bold text-yellow-400">?</span></p>
+                <p class="text-lg mb-4">Computer: <span id="rps-comp-choice" class="font-bold text-cyan-400">?</span></p>
+                <h2 id="rps-result-message" class="text-2xl font-semibold text-white">Make your move!</h2>
+            </div>
+            
+            <!-- Score -->
+            <div class="text-center mt-6">
+                <p class="text-xl font-bold">Score</p>
+                <p class="text-lg text-gray-300">You: <span id="rps-player-score">0</span> | Computer: <span id="rps-comp-score">0</span></p>
+            </div>
+        </div>
+
+        <!-- View 3: Snake Water Gun Game -->
+        <div id="swg-game-view" class="game-view bg-gray-800 p-8 rounded-2xl shadow-2xl hidden-view">
+            <button class="back-to-menu-btn text-teal-400 hover:text-teal-300 mb-4">&larr; Back to Menu</button>
+            <h1 class="text-3xl font-bold text-center mb-6">Snake Water Gun</h1>
+            
+            <!-- Choice Buttons -->
+            <div class="flex justify-around mb-8">
+                <button class="swg-choice-btn game-choice-btn bg-gray-700 p-4 rounded-full text-5xl" data-choice="snake">🐍</button>
+                <button class="swg-choice-btn game-choice-btn bg-gray-700 p-4 rounded-full text-5xl" data-choice="water">💧</button>
+                <button class="swg-choice-btn game-choice-btn bg-gray-700 p-4 rounded-full text-5xl" data-choice="gun">🔫</button>
+            </div>
+            
+            <!-- Result Area -->
+            <div class="text-center bg-gray-900 p-6 rounded-lg min-h-[150px]">
+                <p class="text-lg mb-2">You: <span id="swg-player-choice" class="font-bold text-yellow-400">?</span></p>
+                <p class="text-lg mb-4">Computer: <span id="swg-comp-choice" class="font-bold text-cyan-400">?</span></p>
+                <h2 id="swg-result-message" class="text-2xl font-semibold text-white">Make your move!</h2>
+            </div>
+            
+            <!-- Score -->
+            <div class="text-center mt-6">
+                <p class="text-xl font-bold">Score</p>
+                <p class="text-lg text-gray-300">You: <span id="swg-player-score">0</span> | Computer: <span id="swg-comp-score">0</span></p>
+            </div>
+        </div>
+
+    </div> <!-- End Main Container -->
+
+    <!-- 4. Main JavaScript Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // === STATE & DOM ELEMENTS ===
+            
+            // Views
+            const menuView = document.getElementById('menu-view');
+            const rpsGameView = document.getElementById('rps-game-view');
+            const swgGameView = document.getElementById('swg-game-view');
+            const allViews = [menuView, rpsGameView, swgGameView];
+
+            // Menu Buttons
+            const playRpsBtn = document.getElementById('play-rps-btn');
+            const playSwgBtn = document.getElementById('play-swg-btn');
+            const backButtons = document.querySelectorAll('.back-to-menu-btn');
+
+            // Scores
+            let rpsScore = { player: 0, computer: 0 };
+            let swgScore = { player: 0, computer: 0 };
+
+            // RPS Elements
+            const rpsChoiceButtons = document.querySelectorAll('.rps-choice-btn');
+            const rpsPlayerChoice = document.getElementById('rps-player-choice');
+            const rpsCompChoice = document.getElementById('rps-comp-choice');
+            const rpsResultMessage = document.getElementById('rps-result-message');
+            const rpsPlayerScore = document.getElementById('rps-player-score');
+            const rpsCompScore = document.getElementById('rps-comp-score');
+
+            // SWG Elements
+            const swgChoiceButtons = document.querySelectorAll('.swg-choice-btn');
+            const swgPlayerChoice = document.getElementById('swg-player-choice');
+            const swgCompChoice = document.getElementById('swg-comp-choice');
+            const swgResultMessage = document.getElementById('swg-result-message');
+            const swgPlayerScore = document.getElementById('swg-player-score');
+            const swgCompScore = document.getElementById('swg-comp-score');
+
+
+            // === VIEW NAVIGATION ===
+
+            function showView(viewId) {
+                allViews.forEach(view => {
+                    if (view.id === viewId) {
+                        view.classList.remove('hidden-view');
+                        view.classList.add('visible-view');
+                    } else {
+                        view.classList.add('hidden-view');
+                        view.classList.remove('visible-view');
+                    }
+                });
+            }
+
+            // Menu navigation
+            playRpsBtn.addEventListener('click', () => showView('rps-game-view'));
+            playSwgBtn.addEventListener('click', () => showView('swg-game-view'));
+            backButtons.forEach(btn => {
+                btn.addEventListener('click', () => showView('menu-view'));
+            });
+
+
+            // === ROCK PAPER SCISSORS LOGIC ===
+
+            const rpsOptions = ['rock', 'paper', 'scissors'];
+            const rpsEmoji = { rock: '✊', paper: '✋', scissors: '✌️' };
+
+            rpsChoiceButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    playRPS(button.dataset.choice);
+                });
+            });
+
+            function playRPS(playerChoice) {
+                const compChoice = rpsOptions[Math.floor(Math.random() * rpsOptions.length)];
+                let result = '';
+
+                if (playerChoice === compChoice) {
+                    result = "It's a Tie!";
+                } else if (
+                    (playerChoice === 'rock' && compChoice === 'scissors') ||
+                    (playerChoice === 'paper' && compChoice === 'rock') ||
+                    (playerChoice === 'scissors' && compChoice === 'paper')
+                ) {
+                    result = 'You Win!';
+                    rpsScore.player++;
+                } else {
+                    result = 'You Lose!';
+                    rpsScore.computer++;
+                }
+                
+                // Update UI
+                rpsPlayerChoice.textContent = rpsEmoji[playerChoice];
+                rpsCompChoice.textContent = rpsEmoji[compChoice];
+                rpsResultMessage.textContent = result;
+                rpsPlayerScore.textContent = rpsScore.player;
+                rpsCompScore.textContent = rpsScore.computer;
+            }
+
+
+            // === SNAKE WATER GUN LOGIC ===
+
+            const swgOptions = ['snake', 'water', 'gun'];
+            const swgEmoji = { snake: '🐍', water: '💧', gun: '🔫' };
+
+            swgChoiceButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    playSWG(button.dataset.choice);
+                });
+            });
+
+            function playSWG(playerChoice) {
+                const compChoice = swgOptions[Math.floor(Math.random() * swgOptions.length)];
+                let result = '';
+
+                // This logic is based on your Python code's rules
+                if (playerChoice === compChoice) {
+                    result = "It's a Tie!";
+                } else if (
+                    (playerChoice === 'snake' && compChoice === 'water') || // Snake drinks Water
+                    (playerChoice === 'water' && compChoice === 'gun') ||   // Water sinks Gun
+                    (playerChoice === 'gun' && compChoice === 'snake')      // Gun shoots Snake
+                ) {
+                    result = 'You Win!';
+                    swgScore.player++;
+                } else {
+                    result = 'You Lose!';
+                    swgScore.computer++;
+                }
+
+                // Update UI
+                swgPlayerChoice.textContent = swgEmoji[playerChoice];
+                swgCompChoice.textContent = swgEmoji[compChoice];
+                swgResultMessage.textContent = result;
+                swgPlayerScore.textContent = swgScore.player;
+                swgCompScore.textContent = swgScore.computer;
+            }
+
+            // --- Initialize ---
+            // Start by showing the menu
+            showView('menu-view');
+        });
+    </script>
+</body>
+</html>
