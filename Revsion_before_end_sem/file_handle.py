@@ -1,0 +1,10 @@
+f=open("img.txt","r")
+data=f.read()
+print(data)
+f.close()
+f=open("img.txt","w")
+data1=f.write("HEllO1")
+data2=f.write("HEllO2")
+print(data1,data2)
+f.close()
+
